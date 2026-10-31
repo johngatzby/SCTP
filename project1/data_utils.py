@@ -17,7 +17,11 @@ DATE_CANDIDATES = (
 
 
 def read_jobs(source, nrows: int | None = None) -> pd.DataFrame:
-    """Read a path or Streamlit UploadedFile as CSV."""
+    """Read a path or Streamlit UploadedFile as CSV or Parquet."""
+    name = getattr(source, "name", str(source))   # uploads have .name, paths become text
+    if name.endswith(".parquet"):
+        df = pd.read_parquet(source)
+        return df.head(nrows) if nrows else df
     return pd.read_csv(source, low_memory=False, nrows=nrows)
 
 

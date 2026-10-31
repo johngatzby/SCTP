@@ -43,9 +43,8 @@ ROOT = Path(__file__).parent
 # Path to the small fictional demo dataset.
 DEMO_FILE = ROOT / "data" / "demo_jobs.csv"
 
-# Path to the full course dataset (SGJobData.csv).
-COURSE_FILE = ROOT / "data" / "SGJobData.csv"
-
+# Path to the full course dataset (Parquet version of SGJobData.csv).
+COURSE_FILE = ROOT / "data" / "SGJobData.parquet" 
 
 # Set the browser tab title, tab icon, and use the full browser width.
 st.set_page_config(page_title="Singapore Jobs Explorer", page_icon="📊", layout="wide")
@@ -57,12 +56,12 @@ st.title("Singapore Jobs Explorer")
 st.caption("A practical view of role demand and salary ranges for career conversations.")
 
 
-# If the course CSV file exists on disk...
+# If the course data file exists on disk...
 if COURSE_FILE.exists():
     # ...load the course dataset.
-    raw = read_jobs(COURSE_FILE)
+    raw = read_jobs(COURSE_FILE, nrows=50000)
     # Label shown in the info box so the user knows which data is used.
-    data_label = "Full course dataset"
+    data_label = "Course dataset (first 50,000 rows)"
 
 # Otherwise (the course file is missing)...
 else:
